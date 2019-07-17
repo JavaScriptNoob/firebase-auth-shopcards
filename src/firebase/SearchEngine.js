@@ -4,7 +4,7 @@ class SearchEngine extends Component {
     state = {
         view: "simple",
         textPicker: "",
-        datePicker: 1
+        datePicker: ""
     };
     updateStateView = e => {
         e.preventDefault();
@@ -19,13 +19,12 @@ class SearchEngine extends Component {
             inputValue.text = this.state.textPicker;
             inputValue.date = "null";
             console.log(inputValue, "wqwdqw");
-        } else if (!this.state.textPicker && this.state.datePicker) {
+        } else if ( this.state.datePicker && !this.state.textPicker ) {
+            console.log(inputValue, "just a date"); 
           inputValue.text = "null";
-          inputValue.date = this.state.datePicker;  
-          inputValue.text = "null";
-            
-            
-            
+          inputValue.date = this.state.datePicker;
+          
+                      
         } else if (!this.state.textPicker && !this.state.datePicker) {
             console.log("value wasnt find ");
         }
@@ -36,6 +35,7 @@ class SearchEngine extends Component {
     };
     updateDate = event => {
         this.setState({ datePicker: event.target.value });
+        
     };
     render() {
         let prec = this.props.data;

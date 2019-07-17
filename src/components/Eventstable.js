@@ -2,45 +2,69 @@ import React, { Component } from "react";
 import Truncate from "react-truncate-html";
 import { db } from "../firebase/firebase";
 import SearchEngine from "../firebase/SearchEngine";
-let mutationState;
+let mutationState = [" "];
 class EventsTable extends Component {
-  constructor () {
-    super();
-    this.handleStateChange = this.handleStateChange.bind(this);
-  }
-    state = {
-        items: "",
-        query: "",
-        data: [{ description: "aiajajjsjs" }],
-        searchData : []
-    };
-    
+    constructor() {
+        super();
+        this.handleStateChange = this.handleStateChange.bind(this);
+        this.state = {
+            items: "",
+            query: "",
+            data: [],
+            searchData: [],
+            view: "simple"
+        };
+        this._isMounted = false;
+    }
 
-    handleStateChange(value){
-        
+    handleStateChange(value) {
         let searchData = this.state.searchData;
+        if (searchData) {
+            searchData.forEach(function(value, i, array) {
+                array.shift(0);
+            });
+        }
+
         searchData.push(value);
-        this.setState({ searchData : searchData})
+        this.setState({ searchData: searchData, view: "edit" });
+        let dirtyData = this.state.data;
+        let cleanData = dirtyData.filter(d => d.city !== "helsingborg")
+        console.log(cleanData, 'clean data',searchData[0].date,searchData[0].text) 
+       
     }
     createMarkup(lenta) {
         return { __html: lenta };
     }
     componentDidMount() {
-        console.log(this.state);
+        let that = this;
+        this._isMounted = true;
+        console.log(this.state, this._isMounted, "we ckeck out mounted");
 
-        db.ref("events/").on("value", function(snapshot) {
-            mutationState = snapshot.val();
-        });
+        db.ref("events/")
+            .once("value", function(snapshot) {
+                mutationState = snapshot.val();
+                console.log(mutationState, "componenDidMount", this);
+            })
+            .then(function() {
+                if (that._isMounted) {
+                    console.log("its this here", that);
+                    that.setState({ data: mutationState });
+                }
+            });
+    }
+    componentWillMount() {
+        this._isMounted = false;
+    }
+    getSnapshotFromFirebase() {}
 
-        setTimeout(() => {
-            console.log(mutationState, "componenDidMount");
+    finalyFunc = () => {
+        if (!this._isMounted) {
             this.setState({
                 data: mutationState
             });
-        }, 100);
-    }
+        }
+    };
     render() {
-        let my;
         return (
             <div className="container">
                 <div>

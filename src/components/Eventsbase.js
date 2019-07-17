@@ -60,7 +60,7 @@ class EventsBase extends Component {
             element.featured_media.hasOwnProperty("source_url")
           ) {
             dataClean.push({
-              city: element._embedded.location[0].city,
+              city: element._embedded.location[0].city.toLowerCase(),
               start: element.occasions[0].start_date,
               end: element.occasions[0].end_date,
               img: element.featured_media.source_url,
@@ -69,7 +69,7 @@ class EventsBase extends Component {
               description: element.content.rendered
             });
           } else {
-            console.log(key, ",,,,,,,,");
+            
           }
         }
         console.log(dataClean, "ttrhr");
