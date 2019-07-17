@@ -30,7 +30,7 @@ class EventsTable extends Component {
         let dirtyData = this.state.data;
         let cleanData = dirtyData.filter(d => d.city !== "helsingborg")
         console.log(cleanData, 'clean data',searchData[0].date,searchData[0].text) 
-       
+        
     }
     createMarkup(lenta) {
         return { __html: lenta };
