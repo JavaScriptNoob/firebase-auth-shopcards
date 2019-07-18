@@ -26,7 +26,8 @@ class SearchEngine extends Component {
           
                       
         } else if (!this.state.textPicker && !this.state.datePicker) {
-            console.log("value wasnt find ");
+            inputValue.text = "null";
+            inputValue.date ="null";
         }
         this.props.handleStateChange(inputValue);
     };
@@ -35,7 +36,7 @@ class SearchEngine extends Component {
     };
     updateDate = event => {
         this.setState({ datePicker: event.target.value });
-        
+
     };
     render() {
         let prec = this.props.data;
