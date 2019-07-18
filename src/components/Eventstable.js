@@ -14,7 +14,7 @@ class EventsTable extends Component {
             date: [],
             location: [],
             view: "simple",
-            cleanData: []
+            cleanData:   []
         };
         this._isMounted = false;
     }
